@@ -14,7 +14,17 @@ import os
 
 __version__ = "0.1.1"
 MTGA_COLLECTION_KEYWORD = "PlayerInventory.GetPlayerCardsV3"
-MTGA_WINDOWS_LOG_FILE = os.getenv('APPDATA')+"\..\LocalLow\Wizards Of The Coast\MTGA\output_log.txt"
+"""
+TODO: Revert this on prod
+Copied a version of output_log.txt for testing purposes
+<==========================>
+"""
+MTGA_WINDOWS_LOG_FILE = None
+if sys.platform == 'linux':
+    MTGA_WINDOWS_LOG_FILE = '../output_log.txt'
+else:
+    MTGA_WINDOWS_LOG_FILE = os.getenv('APPDATA')+"\..\LocalLow\Wizards Of The Coast\MTGA\output_log.txt"
+#<====================================>
 
 class MtgaLogParsingError(ValueError):
     pass
@@ -66,7 +76,7 @@ class MtgaLog(object):
 
     def get_collection(self):
         collection = self.get_last_json_block('<== ' + MTGA_COLLECTION_KEYWORD)
-        for id, count in collection.iteritems():
+        for id, count in collection.items():
             card = all_mtga_cards.find_one(id)
             yield [card, count]
 
