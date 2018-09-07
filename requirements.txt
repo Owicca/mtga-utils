@@ -1,6 +1,3 @@
-os
-sys
-json
 mtga
-shlex
+ushlex
 argparse
